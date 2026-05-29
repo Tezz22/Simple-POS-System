@@ -18,7 +18,7 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasApiTokens;
 
     /**
      * Get the attributes that should be cast.
@@ -49,7 +49,7 @@ class User extends Authenticatable
     // Relasi: User Belongs to Role
     public function role(): BelongsTo
     {
-        return $table->belongsTo(Role::class);
+        return $this->belongsTo(Role::class);
     }
 
     // Relasi: Kasir memproses banyak Transaksi

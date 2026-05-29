@@ -1,14 +1,12 @@
+<template>
+  <router-view />
+</template>
+
 <script setup>
-import { onMounted } from 'vue'
-import api from './services/api'
-
-onMounted(async () => {
-    const response = await api.get('/test')
-
-    console.log(response.data)
-})
+// Tidak butuh logic apa-apa di sini untuk setup awal SPA
 </script>
 
-<template>
-  <h1>Simple POS Vue</h1>
-</template>
+<style>
+/* Anda bisa memasukkan global style atau import Tailwind di sini jika belum */
+@import './assets/main.css'; 
+</style>
