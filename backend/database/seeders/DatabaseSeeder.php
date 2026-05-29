@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             RoleAndUserSeeder::class,
+            CategoryAndProductSeeder::class,
+            TransactionSimulatedSeeder::class,
         ]);
     }
 }

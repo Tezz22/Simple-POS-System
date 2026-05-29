@@ -1,0 +1,36 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+class TransactionItem extends Model
+{
+    protected $fillable = [
+        'transaction_id', 
+        'product_id', 
+        'qty', 
+        'price', 
+        'discount_amount', 
+        'subtotal'
+    ];
+
+    protected $casts = [
+        'qty' => 'integer',
+        'price' => 'decimal:2',
+        'discount_amount' => 'decimal:2',
+        'subtotal' => 'decimal:2',
+    ];
+
+    public function transaction(): BelongsTo
+    {
+        return $this->belongsTo(Transaction::class);
+    }
+
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class);
+    }
+}
