@@ -12,7 +12,7 @@ const routes = [
     {
         path: '/admin/dashboard',
         name: 'admin.dashboard',
-        component: () => import('@/views/Admin/Dashboard.vue'), // Lazy load
+        component: () => import('@/views/Admin/Dashboard.vue'),
         meta: { requiresAuth: true, role: 'admin' }
     },
     {

@@ -1,12 +1,9 @@
 <template>
-  <router-view />
+  <RouterView />
+  
+  <ToastContainer />
 </template>
 
 <script setup>
-// Tidak butuh logic apa-apa di sini untuk setup awal SPA
+import ToastContainer from '@/components/ui/ToastContainer.vue'
 </script>
-
-<style>
-/* Anda bisa memasukkan global style atau import Tailwind di sini jika belum */
-@import './assets/main.css'; 
-</style>

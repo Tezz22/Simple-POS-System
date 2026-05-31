@@ -1,3 +1,24 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+    --color-primary: #0f766e;        /* teal-700 */
+    --color-primary-hover: #115e59;  /* teal-800 */
+    --color-primary-light: #14b8a6;  /* teal-500 */
+    --color-sidebar: #134e4a;        /* teal-900 */
+    --color-background: #f8fafc;     /* slate-50 */
+    --color-text-primary: #0f172a;   /* slate-900 */
+    --color-text-secondary: #64748b; /* slate-500 */
+
+    --color-success: #22c55e;        /* green-500 */
+    --color-warning: #f59e0b;        /* amber-500 */
+    --color-danger: #ef4444;         /* red-500 */
+    --color-info: #06b6d4;           /* cyan-500 */
+
+    --font-sans: 'Inter', sans-serif;
+}
+
+@variant dark (&:where(.dark, .dark *));
+
+body {
+    @apply bg-background text-text-primary transition-colors duration-200 font-sans;
+}
