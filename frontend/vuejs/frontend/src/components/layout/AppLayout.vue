@@ -2,7 +2,12 @@
   <div
     class="min-h-screen bg-background text-text-primary dark:bg-gray-950 dark:text-gray-100 transition-colors duration-200"
   >
-    <Sidebar :isOpen="sidebarOpen" :menuItems="menuItems" @close="sidebarOpen = false" />
+    <Sidebar
+      :isOpen="sidebarOpen"
+      :menuItems="menuItems"
+      @close="sidebarOpen = false"
+      @toggle-collapse="sidebarOpen = !sidebarOpen"
+    />
 
     <div
       v-if="sidebarOpen"
@@ -10,7 +15,11 @@
       @click="sidebarOpen = false"
     ></div>
 
-    <div class="md:pl-64 flex flex-col min-h-screen pt-16">
+    <!-- Padding kiri dinamis: lebar penuh saat terbuka (pl-64), ramping saat ditutup (pl-20) -->
+    <div
+      class="flex flex-col min-h-screen pt-16 transition-all duration-300"
+      :class="sidebarOpen ? 'md:pl-64' : 'md:pl-20'"
+    >
       <TopBar @toggleSidebar="sidebarOpen = !sidebarOpen" />
 
       <main class="flex-1 p-6 overflow-y-auto">
@@ -32,18 +41,19 @@ const authStore = useAuthStore()
 const sidebarOpen = ref(false)
 
 // Menentukan link menu secara otomatis berdasarkan role user yang login
+// icon menggunakan nama icon Iconify (heroicons)
 const menuItems = computed(() => {
   if (authStore.isAdmin) {
     return [
-      { label: 'Dashboard', to: '/admin/dashboard', icon: '📊' },
-      { label: 'Manajemen Produk', to: '/admin/produk', icon: '📦' },
-      { label: 'Kelola Karyawan', to: '/admin/karyawan', icon: '👥' },
-      { label: 'Laporan Penjualan', to: '/admin/laporan', icon: '📈' },
+      { label: 'Dashboard',          to: '/admin/dashboard', icon: 'heroicons:squares-2x2-solid' },
+      { label: 'Manajemen Produk',   to: '/admin/produk',    icon: 'heroicons:archive-box-solid' },
+      { label: 'Kelola Karyawan',    to: '/admin/karyawan',  icon: 'heroicons:users-solid' },
+      { label: 'Laporan Penjualan',  to: '/admin/laporan',   icon: 'heroicons:chart-bar-solid' },
     ]
   } else {
     return [
-      { label: 'Transaksi Baru', to: '/kasir/transaksi', icon: '🛒' },
-      { label: 'Riwayat Transaksi', to: '/kasir/riwayat', icon: '📋' },
+      { label: 'Transaksi Baru',       to: '/kasir/transaksi', icon: 'heroicons:shopping-cart-solid' },
+      { label: 'Riwayat Transaksi',    to: '/kasir/riwayat',   icon: 'heroicons:clipboard-document-list-solid' },
     ]
   }
 })

@@ -16,37 +16,28 @@
 
       <!-- Informasi Tren Naik Turun Penjualan -->
       <div v-if="trend" class="flex items-center gap-1 text-xs font-semibold">
-        <span
-          :class="trend.direction === 'up' ? 'text-success' : 'text-danger'"
-          class="flex items-center gap-0.5"
-        >
-          <Icon
-            :icon="trend.direction === 'up' ? 'heroicons:arrow-trending-up' : 'heroicons:arrow-trending-down'"
-            class="w-3.5 h-3.5"
-          />
-          {{ trend.value }}%
+        <span :class="trend.direction === 'up' ? 'text-success' : 'text-danger'">
+          {{ trend.direction === 'up' ? '▲' : '▼' }} {{ trend.value }}%
         </span>
         <span class="text-text-secondary dark:text-gray-400 font-normal">vs bulan lalu</span>
       </div>
     </div>
 
     <!-- Lingkaran Ikon Dekoratif -->
-    <div :class="['p-3.5 rounded-xl text-white font-bold', colorClasses[color]]">
+    <div :class="['p-3.5 rounded-xl text-white font-bold text-xl', colorClasses[color]]">
       <slot name="icon">
-        <!-- Gunakan icon prop sebagai nama Iconify, fallback ke chart-bar -->
-        <Icon :icon="icon || 'heroicons:chart-bar-solid'" class="w-6 h-6" />
+        <span>{{ icon || '📊' }}</span>
+        <!-- Default Emoji/Icon placeholder -->
       </slot>
     </div>
   </div>
 </template>
 
 <script setup>
-import { Icon } from '@iconify/vue'
-
 defineProps({
-  label: { type: String, required: true },
-  value: { type: [String, Number], required: true },
-  icon:  { type: String, default: 'heroicons:chart-bar-solid' }, // Nama icon Iconify
+  label: { type: String, required: true }, // Contoh: "Total Pendapatan"
+  value: { type: [String, Number], required: true }, // Contoh: "Rp 12.500.000"
+  icon: String, // Menampung representasi icon atau emoji
   color: { type: String, default: 'primary' }, // primary, success, warning, danger, info
   trend: {
     type: Object,
@@ -58,7 +49,7 @@ const colorClasses = {
   primary: 'bg-primary dark:bg-primary-light dark:text-gray-900',
   success: 'bg-success',
   warning: 'bg-warning',
-  danger:  'bg-danger',
-  info:    'bg-info',
+  danger: 'bg-danger',
+  info: 'bg-info',
 }
 </script>

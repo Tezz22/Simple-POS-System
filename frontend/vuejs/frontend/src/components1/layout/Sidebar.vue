@@ -2,18 +2,20 @@
   <aside
     class="bg-sidebar text-gray-100 flex flex-col fixed inset-y-0 left-0 z-40 shadow-xl transition-all duration-300 md:translate-x-0"
     :class="[
+      // Mengatur lebar dinamis: w-64 saat terbuka, w-20 saat tertutup di desktop
       isOpen ? 'w-64 translate-x-0' : 'w-20 -translate-x-full md:translate-x-0'
     ]"
   >
     <!-- HEADER SIDEBAR -->
-    <div
+    <div 
       class="h-16 flex items-center border-b border-teal-800 shrink-0 transition-all duration-300"
       :class="[isOpen ? 'justify-between px-6' : 'justify-center px-0']"
     >
       <!-- Logo & Judul Aplikasi -->
       <div class="flex items-center gap-2 overflow-hidden whitespace-nowrap">
-        <Icon icon="heroicons:building-storefront-solid" class="text-2xl w-7 h-7 shrink-0 text-white" />
-        <h1
+        <span class="text-2xl select-none">🏪</span>
+        <!-- Teks judul disembunyikan lewat transisi opacity saat ditutup -->
+        <h1 
           class="text-lg font-black tracking-wider text-white uppercase transition-all duration-200"
           :class="[isOpen ? 'opacity-100 max-w-xs' : 'opacity-0 max-w-0 pointer-events-none']"
         >
@@ -36,6 +38,7 @@
         @click="$emit('toggle-collapse')"
         class="hidden md:block p-1 text-teal-300 hover:text-white cursor-pointer hover:bg-teal-800/40 rounded-lg transition-colors"
       >
+        <!-- Ikon panah dinamis berubah arah mengikuti state isOpen -->
         <svg class="h-5 w-5 transform transition-transform duration-300" :class="{ 'rotate-180': !isOpen }" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
         </svg>
@@ -56,11 +59,11 @@
         ]"
         :title="!isOpen ? item.label : ''"
       >
-        <!-- Ikon Menu via Iconify (Selalu Muncul) -->
-        <Icon :icon="item.icon" class="text-lg w-5 h-5 shrink-0" />
-
+        <!-- Ikon Menu (Selalu Muncul) -->
+        <span class="text-base shrink-0 select-none">{{ item.icon }}</span>
+        
         <!-- Judul Menu (Sembunyi saat collapse) -->
-        <span
+        <span 
           class="transition-all duration-200 truncate"
           :class="[isOpen ? 'opacity-100 max-w-xs' : 'opacity-0 max-w-0 pointer-events-none']"
         >
@@ -70,7 +73,7 @@
     </nav>
 
     <!-- FOOTER PROFILE USER -->
-    <div
+    <div 
       class="p-4 border-t border-teal-800 bg-teal-950/40 flex items-center shrink-0 transition-all duration-300"
       :class="[isOpen ? 'gap-3 justify-start' : 'gap-0 justify-center']"
     >
@@ -82,7 +85,7 @@
       </div>
 
       <!-- Info Teks User (Sembunyi saat collapse) -->
-      <div
+      <div 
         class="overflow-hidden whitespace-nowrap transition-all duration-200"
         :class="[isOpen ? 'opacity-100 max-w-xs' : 'opacity-0 max-w-0 pointer-events-none']"
       >
@@ -98,11 +101,10 @@
 </template>
 
 <script setup>
-import { Icon } from '@iconify/vue'
 import { useAuthStore } from '@/stores/auth'
 
 const props = defineProps({
-  isOpen: Boolean,
+  isOpen: Boolean, // true = Terbuka lebar, false = Mengempis (mini)
   menuItems: { type: Array, required: true },
 })
 

@@ -1,26 +1,25 @@
 <template>
-  <div
-    v-if="visible"
+  <div 
+    v-if="visible" 
     :class="[
       'flex items-start gap-3 p-4 rounded-xl border text-sm transition-all duration-150',
       variantClasses[variant] || variantClasses.info
     ]"
   >
-    <!-- Ikon Alert Dinamis via Iconify -->
-    <Icon
-      :icon="variantIcons[variant] || 'heroicons:information-circle-solid'"
-      class="w-5 h-5 shrink-0 mt-0.5"
-    />
+    <!-- Ikon Alert Dinamis -->
+    <span class="text-base shrink-0 select-none">
+      {{ iconClasses[variant] || 'ℹ️' }}
+    </span>
 
     <!-- Konten Pesan -->
-    <div class="flex-1 text-textPrimary dark:text-gray-200 font-medium leading-relaxed">
+    <div class="flex-1 text-text-primary dark:text-gray-200 font-medium leading-relaxed">
       <slot></slot>
     </div>
 
     <!-- Tombol Tutup (Dismiss Button) -->
-    <button
-      v-if="dismissible"
-      @click="handleClose"
+    <button 
+      v-if="dismissible" 
+      @click="handleClose" 
       class="cursor-pointer text-text-secondary hover:text-text-primary dark:text-gray-400 dark:hover:text-white p-0.5 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors shrink-0"
     >
       <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -32,7 +31,6 @@
 
 <script setup>
 import { ref } from 'vue'
-import { Icon } from '@iconify/vue'
 
 const props = defineProps({
   variant: {
@@ -48,20 +46,20 @@ const props = defineProps({
 const emit = defineEmits(['close'])
 const visible = ref(true)
 
-// Mapping class warna berdasarkan variant
+// Mapping class warna berdasarkan variant (Ini yang kurang/salah di file Anda)
 const variantClasses = {
   success: 'bg-emerald-50 border-emerald-200 text-emerald-800 dark:bg-emerald-950/20 dark:border-emerald-900/40 dark:text-emerald-400',
-  error:   'bg-red-50 border-red-200 text-red-800 dark:bg-red-950/20 dark:border-red-900/40 dark:text-red-400',
+  error: 'bg-red-50 border-red-200 text-red-800 dark:bg-red-950/20 dark:border-red-900/40 dark:text-red-400',
   warning: 'bg-amber-50 border-amber-200 text-amber-800 dark:bg-amber-950/20 dark:border-amber-900/40 dark:text-amber-400',
-  info:    'bg-blue-50 border-blue-200 text-blue-800 dark:bg-blue-950/20 dark:border-blue-900/40 dark:text-blue-400'
+  info: 'bg-blue-50 border-blue-200 text-blue-800 dark:bg-blue-950/20 dark:border-blue-900/40 dark:text-blue-400'
 }
 
-// Mapping nama icon Iconify berdasarkan variant
-const variantIcons = {
-  success: 'heroicons:check-circle-solid',
-  error:   'heroicons:x-circle-solid',
-  warning: 'heroicons:exclamation-triangle-solid',
-  info:    'heroicons:information-circle-solid'
+// Mapping emoji ikon pembantu
+const iconClasses = {
+  success: '✅',
+  error: '🚨',
+  warning: '⚠️',
+  info: 'ℹ️'
 }
 
 const handleClose = () => {

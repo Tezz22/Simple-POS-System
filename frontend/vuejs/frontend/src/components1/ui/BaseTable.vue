@@ -23,12 +23,9 @@
             >
               <div class="flex items-center gap-1.5">
                 {{ col.label }}
-                <!-- FIX: Hapus statement import yang tersasar masuk ke template -->
-                <Icon
-                  v-if="col.sortable"
-                  icon="heroicons:arrows-up-down"
-                  class="w-3.5 h-3.5 text-gray-400"
-                />
+                <span v-if="col.sortable" class="text-gray-400"
+                  >import { ArrowUpDown } from 'lucide-vue-next' ↕️</span
+                >
               </div>
             </th>
           </slot>
@@ -53,7 +50,7 @@
             class="px-6 py-12 text-center text-text-secondary dark:text-gray-400"
           >
             <div class="flex flex-col items-center justify-center gap-2">
-              <Icon icon="heroicons:inbox" class="w-10 h-10 text-gray-300 dark:text-gray-600" />
+              <span class="text-3xl">📦</span>
               <p class="font-medium text-sm">Tidak ada data untuk ditampilkan</p>
             </div>
           </td>
@@ -80,8 +77,6 @@
 </template>
 
 <script setup>
-import { Icon } from '@iconify/vue'
-
 defineProps({
   columns: {
     type: Array,
@@ -89,13 +84,13 @@ defineProps({
   },
   rows: {
     type: Array,
-    required: true,
+    required: true, // Array objek data dari backend
   },
   loading: {
     type: Boolean,
-    default: false,
+    default: false, // Mengaktifkan efek skeleton loading
   },
 })
 
-defineEmits(['sort'])
+defineEmits(['sort']) // Memicu sorting ketika header di-klik
 </script>
