@@ -7,6 +7,11 @@ use App\Repositories\Contracts\RoleRepositoryInterface;
 use App\Repositories\Eloquent\RoleRepository;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\Eloquent\UserRepository;
+use App\Repositories\Contracts\CategoryRepositoryInterface;
+use App\Repositories\Eloquent\CategoryRepository;
+use App\Repositories\Contracts\ProductRepositoryInterface;
+use App\Repositories\Eloquent\ProductRepository;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,6 +25,8 @@ class AppServiceProvider extends ServiceProvider
         
         // Bind User Repository
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
+        $this->app->bind(CategoryRepositoryInterface::class, CategoryRepository::class);
+        $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
     }
 
     /**
