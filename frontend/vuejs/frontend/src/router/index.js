@@ -2,6 +2,11 @@ import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import Login from '@/views/Auth/Login.vue';
 import ComponentTester from '@/views/ComponentTester.vue';
+import AdminLayout from '@/layouts/AdminLayout.vue';
+import ProductCreate from '@/views/Admin/products/create.vue';
+import ProductEdit from '@/views/Admin/products/edit.vue';
+import ProductIndex from '@/views/Admin/products/index.vue';
+
 
 const routes = [
     { 
@@ -31,6 +36,15 @@ const routes = [
         name: 'kasir.transaksi',
         component: () => import('@/views/Kasir/TransactionCreate.vue'),
         meta: { requiresAuth: true, role: 'kasir' }
+    },
+    {
+        path: '/admin',
+        component: AdminLayout,
+        children: [
+            { path: 'products', component: ProductIndex },
+            { path: 'products/create', component: ProductCreate },
+            { path: 'products/:id/edit', component: ProductEdit }
+        ]
     }
 ];
 

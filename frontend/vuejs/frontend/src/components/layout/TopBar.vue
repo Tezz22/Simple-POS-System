@@ -1,6 +1,11 @@
 <template>
   <header
-    class="h-16 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between px-6 fixed top-0 right-0 left-0 md:left-64 z-30 transition-colors duration-200 shadow-xs"
+    class="h-16 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between px-6 fixed top-0 right-0 z-30 transition-all duration-300 shadow-xs"
+    :class="[
+      isSidebarOpen
+        ? 'left-0 md:left-64'
+        : 'left-0 md:left-20'
+    ]"
   >
     <div class="flex items-center gap-3">
       <button
@@ -41,6 +46,13 @@
 import { useAuthStore } from '@/stores/auth'
 import { useRouter } from 'vue-router'
 import ThemeToggle from '@/components/ThemeToggle.vue'
+
+defineProps({
+  isSidebarOpen: {
+    type: Boolean,
+    default: true,
+  },
+})
 
 defineEmits(['toggleSidebar'])
 
