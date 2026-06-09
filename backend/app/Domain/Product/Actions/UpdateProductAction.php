@@ -5,7 +5,7 @@ namespace App\Domain\Product\Actions;
 use App\Repository\Contracts\ProductRepositoryInterface;
 use Exception;
 
-class CreateProductAction
+class UpdateProductAction
 {
     protected $repository;
 
@@ -14,7 +14,7 @@ class CreateProductAction
         $this->repository = $repository;
     }
 
-    public function execute(array $data)
+    public function execute($id, array $data)
     {
         // Business Rule: Harga jual tidak boleh < harga beli
         if (isset($data['selling_price']) && isset($data['purchase_price'])) {
@@ -23,6 +23,6 @@ class CreateProductAction
             }
         }
 
-        return $this->repository->create($data);
+        return $this->repository->update($id, $data);
     }
 }

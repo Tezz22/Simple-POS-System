@@ -2,7 +2,7 @@
 
 namespace App\Domain\Admin\User\Actions;
 
-use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Repository\Contracts\UserRepositoryInterface;
 
 class DeactivateAction
 {

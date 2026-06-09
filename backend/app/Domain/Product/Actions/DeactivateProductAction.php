@@ -2,7 +2,7 @@
 
 namespace App\Domain\Product\Actions;
 
-use App\Repositories\Contracts\ProductRepositoryInterface;
+use App\Repository\Contracts\ProductRepositoryInterface;
 
 class DeactivateProductAction
 {

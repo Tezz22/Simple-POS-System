@@ -3,14 +3,14 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\Repositories\Contracts\RoleRepositoryInterface;
-use App\Repositories\Eloquent\RoleRepository;
-use App\Repositories\Contracts\UserRepositoryInterface;
-use App\Repositories\Eloquent\UserRepository;
-use App\Repositories\Contracts\CategoryRepositoryInterface;
-use App\Repositories\Eloquent\CategoryRepository;
-use App\Repositories\Contracts\ProductRepositoryInterface;
-use App\Repositories\Eloquent\ProductRepository;
+use App\Repository\Contracts\RoleRepositoryInterface;
+use App\Repository\Eloquent\RoleRepository;
+use App\Repository\Contracts\UserRepositoryInterface;
+use App\Repository\Eloquent\UserRepository;
+use App\Repository\Contracts\CategoryRepositoryInterface;
+use App\Repository\Eloquent\CategoryRepository;
+use App\Repository\Contracts\ProductRepositoryInterface;
+use App\Repository\Eloquent\ProductRepository;
 
 
 class AppServiceProvider extends ServiceProvider

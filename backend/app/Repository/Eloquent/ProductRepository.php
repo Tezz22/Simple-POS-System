@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repositories\Eloquent;
+namespace App\Repository\Eloquent;
 
 use App\Models\Product;
-use App\Repositories\Contracts\ProductRepositoryInterface;
+use App\Repository\Contracts\ProductRepositoryInterface;
 
 class ProductRepository implements ProductRepositoryInterface
 {

@@ -6,7 +6,10 @@
       <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
         <div class="space-y-1">
           <h1 class="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-            <Icon icon="heroicons:shopping-bag-solid" class="w-8 h-8 text-teal-600 dark:text-teal-400" />
+            <Icon
+              icon="heroicons:shopping-bag-solid"
+              class="w-8 h-8 text-teal-600 dark:text-teal-400"
+            />
             Master Data Produk
           </h1>
           <p class="text-sm text-gray-600 dark:text-gray-400">
@@ -27,7 +30,9 @@
 
       <!-- Stats Cards -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
+        <div
+          class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4"
+        >
           <div class="flex items-center justify-between">
             <div>
               <p class="text-sm text-gray-600 dark:text-gray-400">Total Produk</p>
@@ -36,29 +41,42 @@
             <Icon icon="heroicons:cube-solid" class="w-8 h-8 text-blue-500 opacity-20" />
           </div>
         </div>
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
+        <div
+          class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4"
+        >
           <div class="flex items-center justify-between">
             <div>
               <p class="text-sm text-gray-600 dark:text-gray-400">Produk Aktif</p>
-              <p class="text-2xl font-bold text-green-600 dark:text-green-400">{{ activeProducts }}</p>
+              <p class="text-2xl font-bold text-green-600 dark:text-green-400">
+                {{ activeProducts }}
+              </p>
             </div>
             <Icon icon="heroicons:check-circle-solid" class="w-8 h-8 text-green-500 opacity-20" />
           </div>
         </div>
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
+        <div
+          class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4"
+        >
           <div class="flex items-center justify-between">
             <div>
               <p class="text-sm text-gray-600 dark:text-gray-400">Stok Kritis</p>
               <p class="text-2xl font-bold text-red-600 dark:text-red-400">{{ criticalStock }}</p>
             </div>
-            <Icon icon="heroicons:exclamation-triangle-solid" class="w-8 h-8 text-red-500 opacity-20" />
+            <Icon
+              icon="heroicons:exclamation-triangle-solid"
+              class="w-8 h-8 text-red-500 opacity-20"
+            />
           </div>
         </div>
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
+        <div
+          class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4"
+        >
           <div class="flex items-center justify-between">
             <div>
               <p class="text-sm text-gray-600 dark:text-gray-400">Nonaktif</p>
-              <p class="text-2xl font-bold text-gray-600 dark:text-gray-400">{{ inactiveProducts }}</p>
+              <p class="text-2xl font-bold text-gray-600 dark:text-gray-400">
+                {{ inactiveProducts }}
+              </p>
             </div>
             <Icon icon="heroicons:x-circle-solid" class="w-8 h-8 text-gray-500 opacity-20" />
           </div>
@@ -66,7 +84,9 @@
       </div>
 
       <!-- Search & Filter Section -->
-      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 space-y-4">
+      <div
+        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 space-y-4"
+      >
         <div class="flex flex-col md:flex-row md:items-center gap-4">
           <div class="flex-1">
             <SearchInput
@@ -84,7 +104,9 @@
             Bersihkan Filter
           </button>
         </div>
-        <div class="flex items-center gap-2 text-sm text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/20 p-3 rounded-lg border border-amber-200 dark:border-amber-900/30">
+        <div
+          class="flex items-center gap-2 text-sm text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/20 p-3 rounded-lg border border-amber-200 dark:border-amber-900/30"
+        >
           <Icon icon="heroicons:information-circle-solid" class="w-5 h-5 flex-shrink-0" />
           <span>Sistem secara otomatis memantau produk dengan stok di bawah batas minimum</span>
         </div>
@@ -103,39 +125,58 @@
         <EmptyState
           title="Produk Tidak Ditemukan"
           description="Belum ada data barang terdaftar atau kata kunci pencarian Anda tidak cocok."
-        />
+        >
+          <template #icon>
+            <Icon icon="heroicons:archive-box" class="w-14 h-14 text-gray-300 dark:text-gray-600" />
+          </template>
+        </EmptyState>
       </div>
 
       <!-- Products Table -->
-      <div v-else class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+      <div
+        v-else
+        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden"
+      >
         <div class="overflow-x-auto">
-          <BaseTable :items="productStore.products" :fields="tableFields">
-            <template #cell(code)="{ item }">
+          <BaseTable
+            :rows="productStore.products"
+            :columns="tableFields"
+            :loading="productStore.loading"
+          >
+            <template #cell(code)="{ row: item }">
               <div class="space-y-1">
-                <div class="font-mono text-sm font-semibold text-gray-900 dark:text-white">{{ item.code }}</div>
-                <div v-if="item.barcode" class="text-xs text-gray-500 dark:text-gray-400 font-mono">{{ item.barcode }}</div>
+                <div class="font-mono text-sm font-semibold text-gray-900 dark:text-white">
+                  {{ item.code }}
+                </div>
+                <div v-if="item.barcode" class="text-xs text-gray-500 dark:text-gray-400 font-mono">
+                  {{ item.barcode }}
+                </div>
               </div>
             </template>
 
-            <template #cell(name)="{ item }">
-              <span class="font-medium text-gray-900 dark:text-white line-clamp-2">{{ item.name }}</span>
+            <template #cell(name)="{ row: item }">
+              <span class="font-medium text-gray-900 dark:text-white line-clamp-2">{{
+                item.name
+              }}</span>
             </template>
 
-            <template #cell(category)="{ item }">
-              <span class="inline-block px-2.5 py-1 text-xs font-medium text-teal-700 dark:text-teal-300 bg-teal-50 dark:bg-teal-950/30 rounded-full">
+            <template #cell(category)="{ row: item }">
+              <span
+                class="inline-block px-2.5 py-1 text-xs font-medium text-teal-700 dark:text-teal-300 bg-teal-50 dark:bg-teal-950/30 rounded-full"
+              >
                 {{ item.category?.name || 'Umum' }}
               </span>
             </template>
 
-            <template #cell(selling_price)="{ item }">
+            <template #cell(selling_price)="{ row: item }">
               <span class="font-semibold text-gray-900 dark:text-white">
                 Rp {{ item.selling_price.toLocaleString('id-ID') }}
               </span>
             </template>
 
-            <template #cell(stock)="{ item }">
+            <template #cell(stock)="{ row: item }">
               <div class="flex items-center gap-2">
-                <span 
+                <span
                   class="font-semibold"
                   :class="
                     item.stock <= item.min_stock
@@ -145,39 +186,39 @@
                 >
                   {{ item.stock }}
                 </span>
-                <BadgeStatus 
-                  v-if="item.stock <= item.min_stock" 
-                  variant="danger"
-                > 
-                  ⚠️ Kritis
+                <BadgeStatus v-if="item.stock <= item.min_stock" variant="danger">
+                  <Icon icon="material-symbols:warning-rounded" /> Kritis
                 </BadgeStatus>
-                <span v-else class="text-xs text-gray-500 dark:text-gray-400">(Min: {{ item.min_stock }})</span>
+                <span v-else class="text-xs text-gray-500 dark:text-gray-400"
+                  >(Min: {{ item.min_stock }})</span
+                >
               </div>
             </template>
 
-            <template #cell(is_active)="{ item }">
-              <BadgeStatus :variant="item.is_active ? 'success' : 'secondary'">
-                {{ item.is_active ? '✓ Aktif' : '✕ Nonaktif' }}
-              </BadgeStatus>
+            <template #cell(is_active)="{ row: item }">
+              <BadgeStatus :status="item.is_active ? 'active' : 'inactive'" />
             </template>
 
-            <template #cell(actions)="{ item }">
+            <template #cell(actions)="{ row: item }">
               <div class="flex items-center justify-end gap-2">
-                <button
-                  @click="$router.push(`/admin/products/${item.id}/edit`)"
-                  class="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/20 rounded-lg transition-colors"
-                  title="Edit"
+                <!-- Edit -->
+                <IconButton
+                  variant="secondary"
+                  tooltip="Edit Produk"
+                  @click="navigateToEdit(item.id)"
                 >
-                  <Icon icon="heroicons:pencil-square-solid" class="w-5 h-5" />
-                </button>
-                <button
+                  <Icon icon="heroicons:pencil-square" class="w-4 h-4" />
+                </IconButton>
+
+                <!-- Delete / Nonaktifkan -->
+                <IconButton
                   v-if="item.is_active"
+                  variant="danger"
+                  tooltip="Nonaktifkan Produk"
                   @click="openDeactivateConfirm(item.id)"
-                  class="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-lg transition-colors"
-                  title="Nonaktifkan"
                 >
-                  <Icon icon="heroicons:eye-slash-solid" class="w-5 h-5" />
-                </button>
+                  <Icon icon="heroicons:eye-slash" class="w-4 h-4" />
+                </IconButton>
               </div>
             </template>
           </BaseTable>
@@ -187,11 +228,11 @@
       <!-- Confirmation Dialog -->
       <ConfirmDialog
         v-model="isConfirmOpen"
-        title="Nonaktifkan Produk?"
-        message="Produk yang dinonaktifkan tidak akan ditampilkan pada aplikasi kasir POS."
+        title="Nonaktifkan Produk"
+        message="Produk yang dinonaktifkan tidak akan muncul pada aplikasi kasir dan tidak dapat digunakan untuk transaksi baru."
         confirm-text="Ya, Nonaktifkan"
         cancel-text="Batal"
-        variant="danger"
+        variant="warning"
         @confirm="executeDeactivate"
       />
     </div>
@@ -203,6 +244,13 @@ import { ref, onMounted, computed } from 'vue'
 import { Icon } from '@iconify/vue'
 import { useRouter } from 'vue-router'
 import { useProductStore } from '@/stores/product'
+import SearchInput from '@/components/ui/SearchInput.vue'
+import LoadingSpinner from '@/components/ui/LoadingSpinner.vue'
+import EmptyState from '@/components/ui/EmptyState.vue'
+import BaseTable from '@/components/ui/BaseTable.vue'
+import BadgeStatus from '@/components/ui/BadgeStatus.vue'
+import ConfirmDialog from '@/components/ui/ConfirmDialog.vue'
+import IconButton from '@/components/ui/IconButton.vue'
 
 const router = useRouter()
 const productStore = useProductStore()
@@ -220,11 +268,12 @@ const tableFields = [
   { key: 'actions', label: 'Aksi', align: 'right', width: '100px' },
 ]
 
-// Computed statistics
 const totalProducts = computed(() => productStore.products.length)
-const activeProducts = computed(() => productStore.products.filter(p => p.is_active).length)
-const inactiveProducts = computed(() => productStore.products.filter(p => !p.is_active).length)
-const criticalStock = computed(() => productStore.products.filter(p => p.stock <= p.min_stock).length)
+const activeProducts = computed(() => productStore.products.filter((p) => p.is_active).length)
+const inactiveProducts = computed(() => productStore.products.filter((p) => !p.is_active).length)
+const criticalStock = computed(
+  () => productStore.products.filter((p) => p.stock <= p.min_stock).length,
+)
 
 onMounted(() => {
   productStore.fetchAll()
@@ -243,6 +292,10 @@ const navigateToCreate = () => {
   router.push('/admin/products/create')
 }
 
+const navigateToEdit = (id) => {
+  router.push(`/admin/products/${id}/edit`)
+}
+
 const openDeactivateConfirm = (id) => {
   selectedProductId.value = id
   isConfirmOpen.value = true
@@ -252,6 +305,7 @@ const executeDeactivate = async () => {
   if (selectedProductId.value) {
     await productStore.deactivateProduct(selectedProductId.value)
     selectedProductId.value = null
+    isConfirmOpen.value = false
   }
 }
 </script>

@@ -11,7 +11,7 @@ export const useCategoryStore = defineStore('category', {
     async fetchAll() {
       this.loading = true
       try {
-        const response = await api.get('/api/admin/categories')
+        const response = await api.get('/admin/categories')
         this.categories = response.data.data
       } catch (err) {
         console.error('Gagal mengambil data kategori:', err)

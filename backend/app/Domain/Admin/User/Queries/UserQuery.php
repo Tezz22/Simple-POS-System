@@ -2,7 +2,7 @@
 
 namespace App\Domain\Admin\User\Queries;
 
-use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Repository\Contracts\UserRepositoryInterface;
 
 class UserQuery
 {
