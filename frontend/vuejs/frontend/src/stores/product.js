@@ -9,25 +9,6 @@ export const useProductStore = defineStore('product', {
   }),
 
   actions: {
-    // async fetchAll(search = '') {
-    //   this.loading = true
-    //   this.errors = null
-    //   try {
-    //     const response = await api.get('/admin/products', {
-    //       params: { search: search },
-    //     })
-
-    //     if (response.data.data && response.data.data.data) {
-    //       this.products = response.data.data.data
-    //     } else {
-    //       this.products = response.data.data
-    //     }
-    //   } catch (err) {
-    //     console.error('Gagal mengambil data produk:', err)
-    //   } finally {
-    //     this.loading = false
-    //   }
-    // },
     async fetchAll(search = '') {
       this.loading = true
       this.errors = null
@@ -103,7 +84,7 @@ export const useProductStore = defineStore('product', {
     async deactivateProduct(id) {
       this.loading = true
       try {
-        await api.put(`/admin/products/${id}/deactivate`)
+        await api.patch(`/admin/products/${id}/deactivate`)
         await this.fetchAll()
       } catch (err) {
         console.error('Gagal menonaktifkan produk:', err)

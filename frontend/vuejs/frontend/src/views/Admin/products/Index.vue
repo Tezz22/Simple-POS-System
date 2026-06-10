@@ -210,7 +210,7 @@
                   <Icon icon="heroicons:pencil-square" class="w-4 h-4" />
                 </IconButton>
 
-                <!-- Delete / Nonaktifkan -->
+                <!-- Nonaktif -->
                 <IconButton
                   v-if="item.is_active"
                   variant="danger"
@@ -227,13 +227,14 @@
 
       <!-- Confirmation Dialog -->
       <ConfirmDialog
-        v-model="isConfirmOpen"
+        :show="isConfirmOpen"
         title="Nonaktifkan Produk"
         message="Produk yang dinonaktifkan tidak akan muncul pada aplikasi kasir dan tidak dapat digunakan untuk transaksi baru."
         confirm-text="Ya, Nonaktifkan"
         cancel-text="Batal"
         variant="warning"
         @confirm="executeDeactivate"
+        @cancel="isConfirmOpen = false"
       />
     </div>
   </div>
@@ -302,8 +303,13 @@ const openDeactivateConfirm = (id) => {
 }
 
 const executeDeactivate = async () => {
+  console.log('EXECUTE DEACTIVATE')
+
   if (selectedProductId.value) {
     await productStore.deactivateProduct(selectedProductId.value)
+
+    console.log('BERHASIL')
+
     selectedProductId.value = null
     isConfirmOpen.value = false
   }

@@ -35,7 +35,7 @@
         @click="handleLogout"
         class="cursor-pointer flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-danger hover:bg-red-50 dark:hover:bg-red-950/20 rounded-lg transition-colors border border-transparent hover:border-red-100 dark:hover:border-red-900/30"
       >
-        <span>🚪</span>
+        <Icon icon="material-symbols:logout-rounded" class="w-5 h-5" />
         <span class="hidden sm:inline">Keluar</span>
       </button>
     </div>
@@ -43,6 +43,7 @@
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue'
 import { useAuthStore } from '@/stores/auth'
 import { useRouter } from 'vue-router'
 import ThemeToggle from '@/components/ThemeToggle.vue'
