@@ -7,12 +7,9 @@ use Exception;
 
 class UpdateProductAction
 {
-    protected $repository;
-
-    public function __construct(ProductRepositoryInterface $repository)
-    {
-        $this->repository = $repository;
-    }
+    public function __construct(
+        protected ProductRepositoryInterface $repository
+    ) {}
 
     public function execute($id, array $data)
     {

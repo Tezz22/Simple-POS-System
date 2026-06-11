@@ -6,12 +6,9 @@ use App\Repository\Contracts\ProductRepositoryInterface;
 
 class ProductQuery
 {
-    protected $repository;
-
-    public function __construct(ProductRepositoryInterface $repository)
-    {
-        $this->repository = $repository;
-    }
+    public function __construct(
+        protected ProductRepositoryInterface $repository
+    ) {}
 
     public function getAll()
     {

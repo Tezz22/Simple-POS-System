@@ -91,7 +91,7 @@
           <div class="flex-1">
             <SearchInput
               v-model="searchQuery"
-              placeholder="🔍 Cari nama, kode, atau barcode produk..."
+              placeholder="Cari nama, kode, atau barcode produk..."
               @input="handleSearch"
               class="w-full"
             />

@@ -6,12 +6,9 @@ use App\Repository\Contracts\UserRepositoryInterface;
 
 class UserQuery
 {
-    protected $userRepository;
-
-    public function __construct(UserRepositoryInterface $userRepository)
-    {
-        $this->userRepository = $userRepository;
-    }
+    public function __construct(
+        protected UserRepositoryInterface $userRepository
+    ) {}
 
     public function getAll()
     {

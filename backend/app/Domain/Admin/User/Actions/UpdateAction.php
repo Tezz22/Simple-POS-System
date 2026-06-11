@@ -7,12 +7,9 @@ use Illuminate\Support\Facades\Hash;
 
 class UpdateAction
 {
-    protected $userRepository;
-
-    public function __construct(UserRepositoryInterface $userRepository)
-    {
-        $this->userRepository = $userRepository;
-    }
+    public function __construct(
+        protected UserRepositoryInterface $userRepository
+    ) {}
 
     public function execute($id, array $data)
     {

@@ -6,12 +6,9 @@ use App\Repository\Contracts\CategoryRepositoryInterface;
 
 class CategoryQuery
 {
-    protected $repository;
-
-    public function __construct(CategoryRepositoryInterface $repository)
-    {
-        $this->repository = $repository;
-    }
+    public function __construct(
+        protected CategoryRepositoryInterface $repository
+    ) {}
 
     public function getAll()
     {
