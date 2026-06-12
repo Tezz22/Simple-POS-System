@@ -2,8 +2,8 @@
 
 namespace App\Domain\Transaction\Actions;
 
-use App\Repositories\Contracts\TransactionRepositoryInterface;
-use App\Repositories\Contracts\TransactionItemRepositoryInterface;
+use App\Repository\Contracts\TransactionRepositoryInterface;
+use App\Repository\Contracts\TransactionItemRepositoryInterface;
 
 class PrintReceiptAction
 {

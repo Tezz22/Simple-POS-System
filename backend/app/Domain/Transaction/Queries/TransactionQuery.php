@@ -2,7 +2,7 @@
 
 namespace App\Domain\Transaction\Queries;
 
-use App\Repositories\Contracts\TransactionRepositoryInterface;
+use App\Repository\Contracts\TransactionRepositoryInterface;
 
 class TransactionQuery
 {

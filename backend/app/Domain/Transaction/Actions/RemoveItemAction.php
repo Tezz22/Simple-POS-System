@@ -1,7 +1,7 @@
 <?php 
 namespace App\Domain\Transaction\Actions;
 
-use App\Repositories\Contracts\TransactionItemRepositoryInterface;
+use App\Repository\Contracts\TransactionItemRepositoryInterface;
 
 class RemoveItemAction
 {

@@ -41,11 +41,9 @@ class TransactionController extends Controller
 
     public function store(Request $request): JsonResponse
     {
-        $transaction = $this->createAction->execute([
-            'invoice' => 'INV-' . now()->timestamp,
-            'cashier_id' => auth()->id(),
-            'total' => 0,
-        ]);
+        $transaction = $this->createAction->execute(
+            $request->all()
+        );
 
         return response()->json([
             'message' => 'Transaction created',

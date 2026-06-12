@@ -125,7 +125,7 @@ const handleLogin = async () => {
       if (authStore.isAdmin) {
         router.push('/admin/dashboard')
       } else {
-        router.push('/kasir/transaksi')
+        router.push('/cashier')
       }
     } else {
       errorMessage.value = 'Username atau kata sandi yang Anda masukkan salah.'

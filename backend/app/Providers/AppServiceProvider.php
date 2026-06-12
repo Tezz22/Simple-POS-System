@@ -11,6 +11,10 @@ use App\Repository\Contracts\CategoryRepositoryInterface;
 use App\Repository\Eloquent\CategoryRepository;
 use App\Repository\Contracts\ProductRepositoryInterface;
 use App\Repository\Eloquent\ProductRepository;
+use App\Repository\Contracts\TransactionRepositoryInterface;
+use App\Repository\Eloquent\TransactionRepository;
+use App\Repository\Contracts\TransactionItemRepositoryInterface;
+use App\Repository\Eloquent\TransactionItemRepository;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -27,6 +31,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
         $this->app->bind(CategoryRepositoryInterface::class, CategoryRepository::class);
         $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
+        $this->app->bind(TransactionRepositoryInterface::class, TransactionRepository::class);
+        $this->app->bind(TransactionItemRepositoryInterface::class, TransactionItemRepository::class);
     }
 
     /**

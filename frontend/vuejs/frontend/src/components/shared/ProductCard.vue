@@ -49,7 +49,7 @@
         <div class="space-y-0.5">
           <p class="text-xs text-text-secondary dark:text-gray-400">Harga</p>
           <p class="text-sm font-black text-primary dark:text-primary-light tracking-tight">
-            {{ formatRupiah(product.price) }}
+            {{ formatRupiah(product.selling_price) }}
           </p>
         </div>
 

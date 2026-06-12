@@ -3,9 +3,9 @@
 namespace App\Domain\Transaction\Actions;
 
 use Illuminate\Support\Facades\DB;
-use App\Repositories\Contracts\ProductRepositoryInterface;
-use App\Repositories\Contracts\TransactionRepositoryInterface;
-use App\Repositories\Contracts\TransactionItemRepositoryInterface;
+use App\Repository\Contracts\ProductRepositoryInterface;
+use App\Repository\Contracts\TransactionRepositoryInterface;
+use App\Repository\Contracts\TransactionItemRepositoryInterface;
 
 class PayAction
 {
