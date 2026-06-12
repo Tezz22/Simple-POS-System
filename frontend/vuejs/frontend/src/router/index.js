@@ -1,95 +1,144 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import { useAuthStore } from '@/stores/auth';
-import Login from '@/views/Auth/Login.vue';
-import ComponentTester from '@/views/ComponentTester.vue';
-import AdminLayout from '@/layouts/AdminLayout.vue';
-import ProductCreate from '@/views/Admin/products/create.vue';
-import ProductEdit from '@/views/Admin/products/edit.vue';
-import ProductIndex from '@/views/Admin/products/index.vue';
-
+import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 
 const routes = [
-    { 
-        path: '/login', 
-        name: 'login', 
-        component: Login,
-        meta: { guestOnly: true }
+  {
+    path: '/',
+    redirect: '/login',
+  },
+
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('@/views/Auth/Login.vue'),
+    meta: {
+      guestOnly: true,
     },
-    {
-        path: '/tester',
-        name: 'tester',
-        component: ComponentTester,
-        meta: { requiresAuth: false }
+  },
+
+  {
+    path: '/tester',
+    name: 'tester',
+    component: () => import('@/views/ComponentTester.vue'),
+  },
+
+  // =========================
+  // ADMIN
+  // =========================
+  {
+    path: '/admin',
+    component: () => import('@/layouts/AdminLayout.vue'),
+    meta: {
+      requiresAuth: true,
+      role: 'admin',
     },
-    {
-        path: '/',
-        redirect: '/login'
-    },
-    {
-        path: '/admin/dashboard',
+    children: [
+      {
+        path: 'dashboard',
         name: 'admin.dashboard',
         component: () => import('@/views/Admin/Dashboard.vue'),
-        meta: { requiresAuth: true, role: 'admin' }
+      },
+
+      {
+        path: 'products',
+        name: 'admin.products.index',
+        component: () => import('@/views/Admin/products/Index.vue'),
+      },
+
+      {
+        path: 'products/create',
+        name: 'admin.products.create',
+        component: () => import('@/views/Admin/products/Create.vue'),
+      },
+
+      {
+        path: 'products/:id/edit',
+        name: 'admin.products.edit',
+        component: () => import('@/views/Admin/products/Edit.vue'),
+      },
+    ],
+  },
+
+  // =========================
+  // CASHIER
+  // =========================
+  {
+    path: '/cashier',
+    component: () => import('@/layouts/CashierLayout.vue'),
+    meta: {
+      requiresAuth: true,
+      role: 'kasir',
     },
-    {
-        path: '/kasir/transaksi',
-        name: 'kasir.transaksi',
-        component: () => import('@/views/Kasir/TransactionCreate.vue'),
-        meta: { requiresAuth: true, role: 'kasir' }
-    },
-    {
-        path: '/admin',
-        component: AdminLayout,
-        children: [
-            { path: 'products', component: ProductIndex },
-            { path: 'products/create', component: ProductCreate },
-            { path: 'products/:id/edit', component: ProductEdit }
-        ]
-    }
-];
+    children: [
+      {
+        path: '',
+        name: 'cashier.pos',
+        component: () => import('@/views/Cashier/TransactionCreate.vue'),
+      },
+
+      {
+        path: 'transactions',
+        name: 'cashier.transactions',
+        component: () => import('@/views/Cashier/TransactionIndex.vue'),
+      },
+
+      {
+        path: 'transactions/:id',
+        name: 'cashier.transaction.show',
+        component: () => import('@/views/Cashier/TransactionShow.vue'),
+      },
+
+      {
+        path: 'receipts/:id',
+        name: 'cashier.receipt',
+        component: () => import('@/views/Cashier/ReceiptView.vue'),
+      },
+    ],
+  },
+]
 
 const router = createRouter({
-    history: createWebHistory(),
-    routes
-});
+  history: createWebHistory(),
+  routes,
+})
 
-// Guard Checking sebelum berpindah halaman
-router.beforeEach(async (to, from) => {
-    const authStore = useAuthStore();
-    
-    // Jika token ada tetapi data user kosong, fetch dulu data usernya
-    if (authStore.token && !authStore.user) {
-        try {
-            await authStore.fetchCurrentUser();
-        } catch (error) {
-            console.error("Gagal mengambil data user:", error);
-            authStore.logout(); // Bersihkan token jika ternyata token kedaluwarsa
-            return '/login';
-        }
+router.beforeEach(async (to) => {
+  const authStore = useAuthStore()
+
+  if (authStore.token && !authStore.user) {
+    try {
+      await authStore.fetchCurrentUser()
+    } catch (error) {
+      authStore.logout()
+      return '/login'
+    }
+  }
+
+  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+    return '/login'
+  }
+
+  if (to.meta.guestOnly && authStore.isAuthenticated) {
+    if (authStore.isAdmin) {
+      return '/admin/dashboard'
     }
 
-    // Kasus 1: Halaman butuh login, tapi user belum login
-    if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-        return '/login'; // Langsung return string path tujuan
+    if (authStore.isKasir) {
+      return '/cashier'
+    }
+  }
+
+  if (to.meta.role && authStore.user?.role?.name !== to.meta.role) {
+    if (authStore.isAdmin) {
+      return '/admin/dashboard'
     }
 
-    // Kasus 2: Halaman khusus tamu (login), tapi user sudah login -> Lempar ke dashboard sesuai role
-    if (to.meta.guestOnly && authStore.isAuthenticated) {
-        if (authStore.isAdmin) return '/admin/dashboard';
-        if (authStore.isKasir) return '/kasir/transaksi';
-        return '/'; // Fallback jika role tidak dikenali
+    if (authStore.isKasir) {
+      return '/cashier'
     }
 
-    // Kasus 3: Cek hak akses role
-    if (to.meta.role && authStore.user?.role?.name !== to.meta.role) {
-        alert('Anda tidak memiliki hak akses ke halaman ini!');
-        
-        // Jika tidak ada halaman asal (misal user ketik URL manual di tab baru), lempar ke halaman aman
-        if (from.path === to.path || from.path === '/') {
-            return authStore.isAdmin ? '/admin/dashboard' : '/kasir/transaksi';
-        }
-        return from.path; // Kembalikan ke halaman sebelumnya
-    }
-});
+    return '/login'
+  }
+})
 
-export default router;
+export default router
