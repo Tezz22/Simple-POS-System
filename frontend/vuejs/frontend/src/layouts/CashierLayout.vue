@@ -38,7 +38,7 @@ const menuItems = [
   },
   {
     label: 'Riwayat Transaksi',
-    to: '/cashier/transactions',
+    to: '/cashier/transaction-history',
     icon: 'heroicons:receipt-percent-solid',
   },
 ]

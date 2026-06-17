@@ -93,6 +93,12 @@ const routes = [
         name: 'cashier.receipt',
         component: () => import('@/views/Cashier/ReceiptView.vue'),
       },
+
+      {
+        path: 'transaction-history',
+        name: 'cashier.transaction-history',
+        component: () => import('@/views/Cashier/TransactionHistory.vue'),
+      }
     ],
   },
 ]

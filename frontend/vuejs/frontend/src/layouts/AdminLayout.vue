@@ -34,7 +34,7 @@ const isSidebarOpen = ref(true)
 
 const menuItems = [
   { label: 'Dashboard', to: '/admin/dashboard', icon: 'heroicons:squares-2x2-solid' },
-  { label: 'Kategori Produk', to: '/admin/categories', icon: 'heroicons:tag-solid' },
+  // { label: 'Kategori Produk', to: '/admin/categories', icon: 'heroicons:tag-solid' },
   { label: 'Master Produk', to: '/admin/products', icon: 'heroicons:shopping-bag-solid' },
   { label: 'Transaksi Penjualan', to: '/admin/transactions', icon: 'heroicons:credit-card-solid' },
   { label: 'Activity Logs', to: '/admin/logs', icon: 'heroicons:clipboard-document-list-solid' },
