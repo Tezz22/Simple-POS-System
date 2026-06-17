@@ -131,6 +131,8 @@ export const useTransactionStore = defineStore('transaction', {
         return response.data.data
       } catch (error) {
         console.error(error)
+        // console.log(error.response?.status)
+        // console.log(error.response?.data)
         throw error
       } finally {
         this.loading = false

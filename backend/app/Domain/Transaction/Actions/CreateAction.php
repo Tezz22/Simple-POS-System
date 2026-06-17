@@ -2,31 +2,62 @@
 
 namespace App\Domain\Transaction\Actions;
 
-use App\Repository\Contracts\TransactionRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use App\Repository\Contracts\ProductRepositoryInterface;
+use App\Repository\Contracts\TransactionRepositoryInterface;
+use App\Repository\Contracts\TransactionItemRepositoryInterface;
 
 class CreateAction
 {
     public function __construct(
-        protected TransactionRepositoryInterface $repository
+        protected TransactionRepositoryInterface $transactionRepository,
+        protected TransactionItemRepositoryInterface $itemRepository,
+        protected ProductRepositoryInterface $productRepository,
     ) {}
 
     public function execute(array $data)
     {
-        $data['invoice_number'] = 'INV-' . now()->format('YmdHis');
-        $data['cashier_id'] = Auth::id();
-        $data['transaction_date'] = now();
+        return DB::transaction(function () use ($data) {
 
-        $data['total_item'] = 0;
-        $data['subtotal'] = 0;
-        $data['discount_amount'] = 0;
-        $data['grand_total'] = 0;
-        $data['paid_amount'] = 0;
-        $data['change_amount'] = 0;
+            $subtotal = 0;
+            $totalItem = 0;
 
-        $data['payment_method'] = 'cash';
-        $data['status'] = 'draft';
+            foreach ($data['items'] as $item) {
+                $product = $this->productRepository->find($item['product_id']);
 
-        return $this->repository->create($data);
+                $subtotal += $product->selling_price * $item['quantity'];
+                $totalItem += $item['quantity'];
+            }
+
+            $transaction = $this->transactionRepository->create([
+                'invoice_number'   => 'INV-' . now()->format('YmdHis'),
+                'cashier_id'       => Auth::id(),
+                'transaction_date' => now(),
+                'total_item'       => $totalItem,
+                'subtotal'         => $subtotal,
+                'discount_amount'  => 0,
+                'grand_total'      => $subtotal,
+                'paid_amount'      => $data['cash_received'],
+                'change_amount'    => $data['cash_received'] - $subtotal,
+                'payment_method'   => 'cash',
+                'status'           => 'paid',
+            ]);
+
+            foreach ($data['items'] as $item) {
+                $product = $this->productRepository->find($item['product_id']);
+
+                $this->itemRepository->create([
+                    'transaction_id'  => $transaction->id,
+                    'product_id'      => $product->id,
+                    'qty'             => $item['quantity'],
+                    'price'           => $product->selling_price,
+                    'discount_amount' => 0,
+                    'subtotal'        => $product->selling_price * $item['quantity'],
+                ]);
+            }
+
+            return $transaction;
+        });
     }
 }

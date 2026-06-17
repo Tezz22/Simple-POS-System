@@ -20,7 +20,7 @@
 
       <!-- Cart -->
       <div class="space-y-4">
-        <CartSummary :subtotal="transactionStore.subTotal"/>
+        <CartSummary :subtotal="transactionStore.subTotal" />
 
         <PaymentForm :grand-total="transactionStore.grandTotal" @pay="handlePayment" />
       </div>
