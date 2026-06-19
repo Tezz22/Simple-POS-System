@@ -13,13 +13,63 @@
           Riwayat Transaksi
         </h1>
         <p class="text-xs text-text-secondary dark:text-gray-400 mt-0.5">
-          Rekaman seluruh nota penjualan kasir POS
+          Pantau dan audit seluruh rekaman penjualan kasir POS
         </p>
+      </div>
+
+      <!-- Tombol Cetak Laporan + dropdown opsi -->
+      <div class="relative shrink-0" v-click-outside="closeReportMenu">
+        <BaseButton variant="primary" size="md" @click="reportMenuOpen = !reportMenuOpen">
+          <Icon icon="heroicons:document-arrow-down-solid" class="w-4 h-4 mr-1.5" />
+          Cetak Laporan
+          <Icon icon="heroicons:chevron-down-solid" class="w-3.5 h-3.5 ml-1.5" />
+        </BaseButton>
+
+        <Transition
+          enter-active-class="transition duration-150 ease-out"
+          enter-from-class="opacity-0 -translate-y-1"
+          enter-to-class="opacity-100 translate-y-0"
+          leave-active-class="transition duration-100 ease-in"
+          leave-from-class="opacity-100"
+          leave-to-class="opacity-0"
+        >
+          <div
+            v-if="reportMenuOpen"
+            class="absolute right-0 mt-2 w-52 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 py-1.5 z-20"
+          >
+            <button
+              type="button"
+              class="w-full flex items-center gap-2.5 px-4 py-2.5 text-xs font-semibold text-text-primary dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700/60 transition-colors cursor-pointer"
+              @click="printReportList"
+            >
+              <Icon
+                icon="heroicons:printer-solid"
+                class="w-4 h-4 text-text-secondary dark:text-gray-400"
+              />
+              Print Halaman Ini
+            </button>
+            <button
+              type="button"
+              class="w-full flex items-center gap-2.5 px-4 py-2.5 text-xs font-semibold text-text-primary dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700/60 transition-colors cursor-pointer"
+              :disabled="exportingPdf"
+              @click="exportReportPdf"
+            >
+              <Icon
+                :icon="exportingPdf ? 'heroicons:arrow-path' : 'heroicons:document-text-solid'"
+                :class="[
+                  'w-4 h-4 text-text-secondary dark:text-gray-400',
+                  exportingPdf && 'animate-spin',
+                ]"
+              />
+              {{ exportingPdf ? 'Menyiapkan PDF...' : 'Export ke PDF' }}
+            </button>
+          </div>
+        </Transition>
       </div>
     </div>
 
-    <!-- Stats Cards — menggunakan DataCard dari components/ui -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 print:hidden">
       <DataCard
         label="Total Transaksi"
         :value="totalRows"
@@ -47,7 +97,7 @@
     </div>
 
     <!-- Filter Bar -->
-    <SectionCard>
+    <SectionCard class="print:hidden">
       <div class="flex flex-col sm:flex-row gap-3 items-end">
         <div class="flex-1">
           <SearchInput
@@ -77,7 +127,7 @@
     </SectionCard>
 
     <!-- Loading -->
-    <div v-if="loading" class="flex justify-center py-16">
+    <div v-if="loading" class="flex justify-center py-16 print:hidden">
       <LoadingSpinner size="lg" label="Memuat transaksi..." />
     </div>
 
@@ -97,8 +147,14 @@
 
     <!-- Tabel Transaksi -->
     <template v-else>
-      <SectionCard>
-        <BaseTable :columns="tableFields" :rows="transactions" :loading="loading">
+      <!-- Kop laporan, hanya tampil saat print -->
+      <div class="hidden print:block mb-4">
+        <h2 class="text-lg font-black">Laporan Riwayat Transaksi</h2>
+        <p class="text-xs text-gray-600">Dicetak pada {{ formatDate(new Date()) }}</p>
+      </div>
+
+      <SectionCard id="report-table-area">
+        <BaseTable :columns="tableFieldsForView" :rows="transactions" :loading="loading">
           <template #cell(invoice_number)="{ row }">
             <span class="font-mono font-bold text-primary dark:text-primary-light text-xs">
               {{ row.invoice_number }}
@@ -114,7 +170,7 @@
           <template #cell(cashier)="{ row }">
             <div class="flex items-center gap-2">
               <div
-                class="w-6 h-6 rounded-full bg-teal-100 dark:bg-teal-900/40 flex items-center justify-center text-[10px] font-black text-primary dark:text-primary-light shrink-0"
+                class="w-6 h-6 rounded-full bg-teal-100 dark:bg-teal-900/40 flex items-center justify-center text-[10px] font-black text-primary dark:text-primary-light shrink-0 print:hidden"
               >
                 {{ (row.cashier?.name || 'S').charAt(0).toUpperCase() }}
               </div>
@@ -128,7 +184,7 @@
             <span
               class="inline-flex items-center gap-1 text-xs font-semibold text-text-secondary dark:text-gray-300"
             >
-              <Icon icon="heroicons:shopping-bag" class="w-3.5 h-3.5" />
+              <Icon icon="heroicons:shopping-bag" class="w-3.5 h-3.5 print:hidden" />
               {{ row.total_item ?? row.items?.length ?? 0 }} item
             </span>
           </template>
@@ -144,7 +200,7 @@
           </template>
 
           <template #cell(actions)="{ row }">
-            <div class="flex items-center justify-end gap-1.5">
+            <div class="flex items-center justify-end gap-1.5 print:hidden">
               <IconButton
                 variant="secondary"
                 size="sm"
@@ -153,15 +209,12 @@
               >
                 <Icon icon="heroicons:eye" class="w-4 h-4" />
               </IconButton>
-              <IconButton variant="outline" size="sm" tooltip="Cetak Struk" @click="goToPrint(row)">
-                <Icon icon="heroicons:printer" class="w-4 h-4" />
-              </IconButton>
             </div>
           </template>
         </BaseTable>
 
         <!-- Pagination -->
-        <div class="mt-4">
+        <div class="mt-4 print:hidden">
           <TablePagination
             :current-page="currentPage"
             :total-items="totalRows"
@@ -175,9 +228,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import { Icon } from '@iconify/vue'
+import { jsPDF } from 'jspdf'
+import autoTable from 'jspdf-autotable'
 import api from '@/services/api'
 
 import SearchInput from '@/components/ui/SearchInput.vue'
@@ -200,6 +255,9 @@ const currentPage = ref(1)
 const totalRows = ref(0)
 const perPage = ref(10)
 
+const reportMenuOpen = ref(false)
+const exportingPdf = ref(false)
+
 const filters = ref({
   search: '',
   status: '',
@@ -210,14 +268,16 @@ const statusOptions = [
   { value: 'cancelled', label: 'Dibatalkan' },
 ]
 
-const tableFields = [
+// Kolom aksi tetap dideklarasikan, tapi tombol di dalamnya hanya "Lihat Detail"
+// (tombol cetak struk per-baris dihapus sesuai kebutuhan versi admin)
+const tableFieldsForView = [
   { key: 'invoice_number', label: 'No. Invoice', width: '160px' },
   { key: 'transaction_date', label: 'Waktu', width: '150px' },
   { key: 'cashier', label: 'Kasir', width: '140px' },
   { key: 'total_item', label: 'Item', width: '90px' },
   { key: 'grand_total', label: 'Total', width: '130px' },
   { key: 'status', label: 'Status', width: '100px' },
-  { key: 'actions', label: '', width: '90px' },
+  { key: 'actions', label: '', width: '70px' },
 ]
 
 // --- Computed Stats ---
@@ -283,17 +343,56 @@ const clearFilters = () => {
 }
 
 const goToDetail = (transaction) => {
-  router.push(`/cashier/transaction-history/${transaction.id}/detail`)
+  router.push(`/admin/transaction-history/${transaction.id}/detail`)
 }
 
-const goToPrint = (transaction) => {
-  router.push(`/cashier/transaction-history/${transaction.id}/receipts`)
+// --- Cetak Laporan ---
+const closeReportMenu = () => {
+  reportMenuOpen.value = false
+}
+
+const printReportList = () => {
+  reportMenuOpen.value = false
+  window.print()
+}
+
+const exportReportPdf = () => {
+  const doc = new jsPDF({ orientation: 'landscape' })
+
+  doc.setFontSize(14)
+  doc.text('Laporan Riwayat Transaksi', 14, 16)
+
+  autoTable(doc, {
+    head: [['Invoice', 'Kasir', 'Total']],
+    body: transactions.value.map(t => [
+      t.invoice_number,
+      t.cashier?.name ?? 'Sistem',
+      formatRupiah(t.grand_total),
+    ]),
+  })
+
+  doc.save('laporan-transaksi.pdf')
+}
+
+// --- Klik di luar dropdown menutup menu ---
+const vClickOutside = {
+  mounted(el, binding) {
+    el._clickOutsideHandler = (event) => {
+      if (!(el === event.target || el.contains(event.target))) {
+        binding.value(event)
+      }
+    }
+    document.addEventListener('click', el._clickOutsideHandler)
+  },
+  unmounted(el) {
+    document.removeEventListener('click', el._clickOutsideHandler)
+  },
 }
 
 // --- Helpers ---
-const formatDate = (dateString) => {
-  if (!dateString) return '-'
-  return new Date(dateString).toLocaleDateString('id-ID', {
+const formatDate = (dateInput) => {
+  if (!dateInput) return '-'
+  return new Date(dateInput).toLocaleDateString('id-ID', {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
@@ -310,4 +409,19 @@ const formatRupiah = (angka) =>
   }).format(angka || 0)
 
 onMounted(fetchTransactions)
+
+onBeforeUnmount(() => {
+  clearTimeout(searchTimer)
+})
 </script>
+
+<style scoped>
+@media print {
+  .print\:hidden {
+    display: none !important;
+  }
+  .print\:block {
+    display: block !important;
+  }
+}
+</style>

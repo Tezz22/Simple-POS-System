@@ -82,6 +82,10 @@ export const useTransactionStore = defineStore('transaction', {
       this.cart = this.cart.filter((item) => item.id !== productId)
     },
 
+    removeItem(productId) {
+      this.removeFromCart(productId)
+    },
+
     clearCart() {
       this.cart = []
     },

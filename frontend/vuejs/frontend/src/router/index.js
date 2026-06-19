@@ -36,7 +36,7 @@ const routes = [
       {
         path: 'dashboard',
         name: 'admin.dashboard',
-        component: () => import('@/views/Admin/Dashboard.vue'),
+        component: () => import('@/views/Admin/AdminDashboard.vue'),
       },
 
       {
@@ -56,6 +56,18 @@ const routes = [
         name: 'admin.products.edit',
         component: () => import('@/views/Admin/products/Edit.vue'),
       },
+
+      {
+        path: 'transaction-history',
+        name: 'admin.transaction-history',
+        component: () => import('@/views/Admin/transactions/TransactionHistory.vue'),
+      },
+
+      {
+        path: 'transaction-history/:id/detail',
+        name: 'admin.transaction.detail',
+        component: () => import('@/views/Admin/transactions/DetailHistory.vue'),
+      }
     ],
   },
 
@@ -89,7 +101,7 @@ const routes = [
       },
 
       {
-        path: 'receipts/:id',
+        path: 'transaction-history/:id/receipts',
         name: 'cashier.receipt',
         component: () => import('@/views/Cashier/ReceiptView.vue'),
       },
@@ -98,7 +110,13 @@ const routes = [
         path: 'transaction-history',
         name: 'cashier.transaction-history',
         component: () => import('@/views/Cashier/TransactionHistory.vue'),
-      }
+      },
+
+      {
+        path: 'transaction-history/:id/detail',
+        name: 'cashier.transaction.detail',
+        component: () => import('@/views/Cashier/DetailHistory.vue'),
+      },
     ],
   },
 ]

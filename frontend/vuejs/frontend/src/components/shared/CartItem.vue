@@ -7,7 +7,7 @@
         {{ item.name }}
       </h5>
       <p class="text-[11px] font-medium text-text-secondary dark:text-gray-400">
-        {{ formatRupiah(item.price) }} x {{ item.qty }}
+        {{ formatRupiah(item.price) }} x {{ item.quantity }}
       </p>
     </div>
 
@@ -24,7 +24,7 @@
       <span
         class="px-2 text-xs font-bold text-text-primary dark:text-white min-w-[24px] text-center"
       >
-        {{ item.qty }}
+        {{ item.quantity }}
       </span>
       <button
         type="button"
@@ -38,7 +38,7 @@
     <div
       class="text-xs font-black text-text-primary dark:text-white shrink-0 min-w-[70px] text-right tracking-tight"
     >
-      {{ formatRupiah(item.price * item.qty) }}
+      {{ formatRupiah(item.selling_price * item.quantity) }}
     </div>
 
     <button

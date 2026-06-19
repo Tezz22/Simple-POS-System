@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\Admin\CategoryController;
 use App\Http\Controllers\Api\Cashier\TransactionController;
 use App\Http\Controllers\Api\Cashier\TransactionItemController;
 use App\Http\Controllers\Api\Cashier\ReceiptController;
+use App\Http\Controllers\Api\Admin\DashboardController;
 
 Route::post('login', [AuthController::class, 'login']);
 
@@ -25,6 +26,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('users/{user}', [UserController::class, 'show']);
         Route::put('users/{user}', [UserController::class, 'update']);
         Route::patch('users/{user}/toggle-status', [UserController::class, 'toggleStatus']);
+
+        // Dashboard
+        Route::get('dashboard', [DashboardController::class, 'index']);
 
         // Category Routes
         Route::get('categories', [CategoryController::class, 'index']);
