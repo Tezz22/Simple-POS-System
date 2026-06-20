@@ -2,6 +2,7 @@
 
 namespace App\Domain\Transaction\Queries;
 
+use App\Models\Transaction;
 use App\Repository\Contracts\TransactionRepositoryInterface;
 
 class TransactionQuery
@@ -17,7 +18,10 @@ class TransactionQuery
 
     public function getById(string $id)
     {
-        return $this->transactionRepository->find($id);
+        return Transaction::with([
+            'cashier',
+            'items.product',
+        ])->findOrFail($id);
     }
 
     public function getByInvoice(string $invoice)

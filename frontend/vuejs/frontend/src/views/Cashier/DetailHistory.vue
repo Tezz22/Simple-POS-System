@@ -183,11 +183,18 @@ const transaction = ref(null)
 
 const fetchTransactionDetail = async () => {
   loading.value = true
+
   try {
     const response = await api.get(`/cashier/transactions/${route.params.id}`)
+
     transaction.value = response.data.data
+
+    // Debug
+    transaction.value.items.forEach((item) => {
+      console.log(item)
+    })
   } catch (err) {
-    console.error('Gagal mengambil detail transaksi:', err)
+    console.error(err)
     transaction.value = null
   } finally {
     loading.value = false

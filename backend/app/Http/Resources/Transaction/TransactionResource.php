@@ -35,6 +35,22 @@ class TransactionResource extends JsonResource
 
             'notes' => $this->notes,
 
+            'cashier' => $this->cashier,
+
+            'items' => $this->items->map(function ($item) {
+                return [
+                    'id' => $item->id,
+                    'qty' => $item->qty,
+                    'price' => $item->price,
+                    'subtotal' => $item->subtotal,
+                    'product' => [
+                        'id' => $item->product?->id,
+                        'name' => $item->product?->name,
+                        'code' => $item->product?->code,
+                    ],
+                ];
+            }),
+
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
