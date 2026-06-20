@@ -15,16 +15,6 @@ Aplikasi kasir (_Point of Sale_) yang dirancang untuk membantu proses penjualan 
 
 ---
 
-## 🎥 Demo Aplikasi
-
-> Tambahkan GIF atau rekaman layar aplikasi di bawah ini.
-
-```text
-assets/demo.gif
-```
-
----
-
 # ✨ Fitur Utama
 
 | Fitur                  | Status |
