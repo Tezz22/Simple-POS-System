@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\Cashier\TransactionController;
 use App\Http\Controllers\Api\Cashier\TransactionItemController;
 use App\Http\Controllers\Api\Cashier\ReceiptController;
 use App\Http\Controllers\Api\Admin\DashboardController;
+use App\Http\Controllers\Api\Cashier\CashierProductController;
 
 Route::post('login', [AuthController::class, 'login']);
 
@@ -50,6 +51,11 @@ Route::middleware('auth:sanctum')->group(function () {
                 'transactions',
                 TransactionController::class
             )->only(['index', 'show', 'store']);
+
+            Route::get(
+                'products',
+                [CashierProductController::class, 'index']
+            );
 
             Route::post(
                 'transactions/{id}/pay',

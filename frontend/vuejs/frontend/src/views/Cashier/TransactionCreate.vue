@@ -186,7 +186,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { Icon } from '@iconify/vue'
-import { useProductStore } from '@/stores/product'
+import { useCashierProductStore } from '@/stores/cashierProduct'
 import { useTransactionStore } from '@/stores/transaction'
 import { useToastStore } from '@/stores/toast'
  
@@ -204,7 +204,7 @@ import BaseModal      from '@/components/ui/BaseModal.vue'
 import ConfirmDialog  from '@/components/ui/ConfirmDialog.vue'
  
 const router = useRouter()
-const productStore = useProductStore()
+const productStore = useCashierProductStore()
 const transactionStore = useTransactionStore()
 const toastStore = useToastStore()
  

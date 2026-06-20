@@ -17,7 +17,7 @@
         class="text-gray-100 dark:text-gray-800"
         stroke-width="1"
       />
-
+ 
       <!-- Area gradient di bawah garis -->
       <defs>
         <linearGradient id="salesTrendGradient" x1="0" y1="0" x2="0" y2="1">
@@ -26,7 +26,7 @@
         </linearGradient>
       </defs>
       <polygon :points="areaPoints" fill="url(#salesTrendGradient)" />
-
+ 
       <!-- Garis tren -->
       <polyline
         :points="linePoints"
@@ -36,7 +36,7 @@
         stroke-linecap="round"
         stroke-linejoin="round"
       />
-
+ 
       <!-- Titik data + tooltip on hover -->
       <g v-for="(point, idx) in points" :key="'point-' + idx">
         <circle
@@ -61,7 +61,7 @@
           @mouseleave="hoverIndex = null"
         />
       </g>
-
+ 
       <!-- Label sumbu X -->
       <text
         v-for="(point, idx) in points"
@@ -76,7 +76,7 @@
         {{ data[idx].label }}
       </text>
     </svg>
-
+ 
     <!-- Tooltip nilai saat hover -->
     <div
       v-if="hoverIndex !== null"
@@ -88,10 +88,10 @@
     </div>
   </div>
 </template>
-
+ 
 <script setup>
 import { ref, computed } from 'vue'
-
+ 
 const props = defineProps({
   // Format: [{ label: 'Sen', value: 120000 }, ...]
   data: {
@@ -99,23 +99,23 @@ const props = defineProps({
     required: true,
   },
 })
-
+ 
 const hoverIndex = ref(null)
-
+ 
 const width  = 600
 const height = 220
 const padding = { top: 20, right: 16, bottom: 24, left: 16 }
-
+ 
 const maxValue = computed(() => {
   const max = Math.max(...props.data.map((d) => d.value), 0)
   return max === 0 ? 1 : max
 })
-
+ 
 const points = computed(() => {
   const innerWidth  = width - padding.left - padding.right
   const innerHeight = height - padding.top - padding.bottom
   const count = props.data.length
-
+ 
   return props.data.map((d, idx) => {
     const x = count === 1
       ? padding.left + innerWidth / 2
@@ -124,11 +124,11 @@ const points = computed(() => {
     return { x, y }
   })
 })
-
+ 
 const linePoints = computed(() =>
   points.value.map((p) => `${p.x},${p.y}`).join(' ')
 )
-
+ 
 const areaPoints = computed(() => {
   if (points.value.length === 0) return ''
   const baseline = height - padding.bottom
@@ -136,14 +136,14 @@ const areaPoints = computed(() => {
   const last = points.value[points.value.length - 1]
   return `${first.x},${baseline} ` + linePoints.value + ` ${last.x},${baseline}`
 })
-
+ 
 const gridLines = computed(() => {
   const innerHeight = height - padding.top - padding.bottom
   return [0, 0.5, 1].map((fraction) => ({
     y: padding.top + innerHeight * fraction,
   }))
 })
-
+ 
 const formatRupiah = (angka) =>
   new Intl.NumberFormat('id-ID', {
     style: 'currency', currency: 'IDR', minimumFractionDigits: 0,
