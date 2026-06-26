@@ -1,5 +1,5 @@
 <template>
-  <div class="space-y-6 ml-6">
+  <div class="space-y-6 ml-6 mr-6">
     <!-- Header -->
     <div>
       <h1

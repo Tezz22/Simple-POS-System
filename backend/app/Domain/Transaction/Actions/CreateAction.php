@@ -26,6 +26,10 @@ class CreateAction
             foreach ($data['items'] as $item) {
                 $product = $this->productRepository->find($item['product_id']);
 
+                if ($product->stock < $item['quantity']) {
+                    throw new \Exception("Stok {$product->name} tidak mencukupi.");
+                }
+
                 $subtotal += $product->selling_price * $item['quantity'];
                 $totalItem += $item['quantity'];
             }
@@ -55,6 +59,9 @@ class CreateAction
                     'discount_amount' => 0,
                     'subtotal'        => $product->selling_price * $item['quantity'],
                 ]);
+
+                // Kurangi stok
+                $product->decrement('stock', $item['quantity']);
             }
 
             return $transaction;

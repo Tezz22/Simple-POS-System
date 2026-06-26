@@ -45,31 +45,35 @@
         </h4>
       </div>
 
-      <div class="flex items-center justify-between gap-2 mt-auto">
-        <div class="space-y-0.5">
-          <p class="text-xs text-text-secondary dark:text-gray-400">Harga</p>
-          <p class="text-sm font-black text-primary dark:text-primary-light tracking-tight">
-            {{ formatRupiah(product.selling_price) }}
-          </p>
+      <div class="space-y-3 mt-auto">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-xs text-text-secondary dark:text-gray-400">Harga</p>
+
+            <p class="text-sm font-black text-primary dark:text-primary-light tracking-tight">
+              {{ formatRupiah(product.selling_price) }}
+            </p>
+          </div>
+
+          <button
+            type="button"
+            :disabled="isOutofStock"
+            @click="$emit('addToCart', product)"
+            class="cursor-pointer p-2 rounded-xl bg-primary hover:bg-primary-hover text-white dark:bg-primary-light dark:hover:bg-primary dark:text-gray-900 disabled:bg-gray-200 dark:disabled:bg-gray-700 disabled:text-gray-400 transition-colors duration-150 shadow-xs"
+          >
+            <svg
+              class="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2.5"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+          </button>
         </div>
 
-        <button
-          type="button"
-          :disabled="isOutofStock"
-          @click="$emit('addToCart', product)"
-          class="cursor-pointer p-2 rounded-xl bg-primary hover:bg-primary-hover text-white dark:bg-primary-light dark:hover:bg-primary dark:text-gray-900 disabled:bg-gray-200 dark:disabled:bg-gray-700 disabled:text-gray-400 transition-colors duration-150 shadow-xs"
-          title="Tambah ke Keranjang"
-        >
-          <svg
-            class="h-4 w-4"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2.5"
-          >
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-          </svg>
-        </button>
+        <StockIndicator :stock="product.stock" :min-stock="5" />
       </div>
     </div>
   </div>
@@ -77,6 +81,7 @@
 
 <script setup>
 import { computed } from 'vue'
+import StockIndicator from '@/components/shared/StockIndicator.vue'
 
 const props = defineProps({
   product: {
@@ -87,7 +92,9 @@ const props = defineProps({
 
 defineEmits(['addToCart'])
 
-const isOutofStock = computed(() => props.product.stock <= 0)
+const stock = computed(() => Number(props.product.stock ?? 0))
+
+const isOutofStock = computed(() => stock.value <= 0)
 
 const formatRupiah = (angka) => {
   return new Intl.NumberFormat('id-ID', {

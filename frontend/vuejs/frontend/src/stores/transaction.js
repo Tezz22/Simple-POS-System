@@ -40,28 +40,61 @@ export const useTransactionStore = defineStore('transaction', {
     addToCart(product) {
       const existing = this.cart.find((item) => item.id === product.id)
 
+      // stok habis
+      if (Number(product.stock) <= 0) {
+        return false
+      }
+
       if (existing) {
+        // qty sudah mentok stok
+        if (existing.quantity >= Number(product.stock)) {
+          return false
+        }
+
         existing.quantity++
-        return
+        return true
       }
 
       this.cart.push({
         id: product.id,
         name: product.name,
         code: product.code,
-        selling_price: Number(product.selling_price ?? 0),
-        stock: product.stock,
+        selling_price: Number(product.selling_price),
+        stock: Number(product.stock),
         quantity: 1,
       })
+
+      return true
     },
 
     increaseQty(productId) {
       const item = this.cart.find((item) => item.id === productId)
 
+      if (!item) return false
+
+      if (item.quantity >= item.stock) {
+        return false
+      }
+
+      item.quantity++
+
+      return true
+    },
+
+    updateProductStock(productId, stock) {
+      const item = this.cart.find((item) => item.id === productId)
+
       if (!item) return
 
-      if (item.quantity < item.stock) {
-        item.quantity++
+      item.stock = Number(stock)
+
+      // kalau stok berkurang setelah transaksi lain
+      if (item.quantity > item.stock) {
+        item.quantity = item.stock
+      }
+
+      if (item.stock <= 0) {
+        this.removeItem(productId)
       }
     },
 
